@@ -3,11 +3,11 @@
 class TextEffect {
     constructor(txtElement) {
         this.words = ["websites", "mobile apps", "software", "webapps", "ui/ux", "things" ];
-        this.possible = "\\_{ßæ+$ç^]©>å}[§ÆÄΩΣ~¢Δ()ßØσ€ƒ«∞£ΣεÐ≈»√Ξξ∫πÃΩδγ€μΨΖζÄÖÜ";
+        this.possible = "\\_{ßæ+$ç^♪]©>@¥å}[§Æ&ΩΣ~░¢Δ#ßØσ░▓€ƒ«∞£Σ&≈@¥#εÐΔ≈»√ΞΔξ∫πÃΩδγ€μΨΖζ";
         this.txtElement = txtElement;
         this.wordIndex = 0;
         this.wait = 2000;
-        this.delay = 40;
+        this.delay = 20;
         this.spanThis(this.words[0]);
         setTimeout(()=>this.toNextWord(), this.wait);
     }
@@ -18,7 +18,7 @@ class TextEffect {
         var arbitrary = this.possible;
 
         a.every((e,i)=>{
-            if(i>a.length*0.8){
+            if(i>a.length*0.5){
                 return false;
             }
             totalTime+=this.delay;
@@ -30,16 +30,37 @@ class TextEffect {
         this.wordIndex %= this.words.length;
         var nextWord = this.words[this.wordIndex];
 
-        adjustSpans.call(this,this.allSpans(),nextWord.length)
+        adjustSpans.call(this,this.allSpans(),nextWord.length);
+
+        for(var j = 0;j<4;j++){
+            var a = createNumSeq(nextWord.length);
+            shuffleArray(a);
+            a.forEach((e,i)=>{
+                if(i>a.length*0.5){
+                    return false;
+                }
+                totalTime+=this.delay-7;
+                var x = arbitrary.charAt(Math.floor(Math.random() * arbitrary.length));
+                arbitrary.replace(x,"");
+                setTimeout(()=>{this.allSpans()[e].innerText=x},totalTime);
+            });
+        }
         
         var a = createNumSeq(nextWord.length);
         shuffleArray(a);
+        var c = 0;
         a.forEach((e,i)=>{
-            totalTime+=this.delay;
+            var d = (1 - nextWord.length/5)/5; 
+            totalTime+=easeOut(c,this.delay,40,100) + d*this.delay;
+            c+=easeOut(c,this.delay,40,100);
             var x = nextWord[e];
             setTimeout(()=>{this.allSpans()[e].innerText=x},totalTime);
         });
         setTimeout(()=>this.toNextWord(), this.wait);
+
+        function easeOut(t, b, c, d) {
+            return b + (c-b)*(1-(1-t/d)*(1-t/d));
+        };
 
         function createNumSeq(l) {
             var res = [];
@@ -124,22 +145,51 @@ function smoothScroll(target, duration) {
     requestAnimationFrame(scrollAnimation);
 }
 
-var navLinks = document.querySelectorAll(".nav-link, .scroll-bottom");
+var navLinks = document.querySelectorAll(".nav-link");
 
-navLinks.forEach(l=>{
+var scrollLinks = document.querySelectorAll(".scroll-bottom");
+
+scrollLinks.forEach(addScrollClick);
+navLinks.forEach(addScrollClick);
+    
+function addScrollClick(l){
     l.addEventListener("click",e=>{
         e.preventDefault();
         var t = e.target.getAttribute('href') || e.target.parentElement.getAttribute('href');
-        smoothScroll(t, 800);
+        if(t){
+            smoothScroll(t, 800);
+        }
     })
-});
+}
+
+
+// --------------------------nav-bar-highlight------------------------------
+
+window.addEventListener("scroll", findActive);
+var idxActive = 0;
+
+function findActive(){
+    var curViewOn = document.querySelector(navLinks[idxActive].children[0].getAttribute('href'));
+    if(curViewOn.getBoundingClientRect().bottom<50){
+        updateActive(idxActive+1);
+    }
+    if(curViewOn.getBoundingClientRect().bottom>curViewOn.getBoundingClientRect().height+50){
+        updateActive(idxActive-1);
+    }
+}
+
+function updateActive(x){
+    navLinks[idxActive].classList.remove("active");
+    navLinks[x].classList.add("active");
+    idxActive = x;
+}
 
 
 // --------------------------text reveal------------------------------
 
 var h = document.querySelectorAll(".text-hide");
 document.body.onload = ()=>{
-    h.forEach(e=>addRemoveClass(e));
+    h.forEach(addRemoveClass);
 }
 function addRemoveClass(h){
     h.classList.remove("text-hide");
@@ -173,11 +223,13 @@ class ProjectCard{
         var aTag = document.createElement("a");
         aTag.href = this.link;
         wrap.appendChild(aTag);
+        aTag.onclick = runThis;
 
         var card = document.createElement("div");
 	    card.className = "proj-card";
         card.style.width = this.width + "px";
         card.style.height = this.height+ "px";
+        card.setAttribute("data-id",ProjectCard.cardCount);
         if(this.imgUrl){
             card.style.backgroundImage = `url("${this.imgUrl}")`;
         }
@@ -187,7 +239,7 @@ class ProjectCard{
         var projData = document.createElement("div");
 	    projData.className = "proj-data";
         card.appendChild(projData);
-        var projName = document.createElement("span");
+        var projName = document.createElement("div");
         projName.className = "proj-name";
         projData.appendChild(projName);
         var divider = document.createElement("div");
@@ -222,8 +274,48 @@ class ProjectCard{
             this.style.boxShadow = "none";
             projData.style.transform = "translateZ(0)";
         }
+        function runThis(e){
+            e.preventDefault();
+            projName.classList.add("cover");
+            projNum.classList.add("cover");
+            root.style.setProperty("--reveal-delay", "0.33s");
+            root.style.setProperty("--hide-delay", "0s");
+            setTimeout(openProject,450,e);
+        }
+        function openProject(e){
+            disableScroll();
+            var projContainer = document.querySelector(".open-project");
+            projContainer.classList.remove("hide");
+            projContainer.classList.add("reveal");
+
+            let closeBtn = document.createElement("button", HTMLButtonElement);
+            closeBtn.innerText = "X";
+            closeBtn.className = "proj-close-btn";
+            closeBtn.onclick = closeProject
+            projContainer.append(closeBtn);
+
+            // Cursor updation
+            var links = document.querySelectorAll("a");
+            links.forEach(updateMouseSize);
+
+            function closeProject(){
+                root.style.setProperty("--reveal-delay", "0s");
+                root.style.setProperty("--hide-delay", "0.33s");
+                projContainer.classList.remove("reveal");
+                projContainer.classList.add("hide");
+                setTimeout(()=>{
+                    projName.classList.remove("cover");
+                    projNum.classList.remove("cover");
+                }, 600);
+                projContainer.innerHTML = "";
+                enableScroll();
+            }
+
+        }
     }
 }
+var root = document.documentElement;
+
 ProjectCard.cardCount = 0;
 ProjectCard.cardPos = [["7%","0"],["23%","115px"], ["70%","-360px"], ["7%","-300px"], ["55%","-400px"]];
 var projects = ["algo visualizer", "piano", "recipe box", "canvas", "truth dare"];
@@ -235,6 +327,50 @@ projects.forEach(p=>{
     }
     new ProjectCard(projContainer, p, "#", `./images/projects/${p}.png`,w,h);
 });
+
+// To diable Scroll when project is shown
+
+var keys = {37: 1, 38: 1, 39: 1, 40: 1};
+
+function preventDefault(e) {
+    e.preventDefault();
+}
+
+function preventDefaultForScrollKeys(e) {
+    if (keys[e.keyCode]) {
+        preventDefault(e);
+        return false;
+    }
+}
+
+// modern Chrome requires { passive: false } when adding event
+var supportsPassive = false;
+try {
+    window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
+        get: function () { supportsPassive = true; } 
+    }));
+} catch(e) {}
+
+var wheelOpt = supportsPassive ? { passive: false } : false;
+var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+
+// call this to Disable
+function disableScroll() {
+    window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
+    window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
+    window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
+    window.addEventListener('keydown', preventDefaultForScrollKeys, false);
+    document.querySelector("body").classList.add("disable-scroll");
+}
+
+// call this to Enable
+function enableScroll() {
+    window.removeEventListener('DOMMouseScroll', preventDefault, false);
+    window.removeEventListener(wheelEvent, preventDefault, wheelOpt); 
+    window.removeEventListener('touchmove', preventDefault, wheelOpt);
+    window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
+    document.querySelector("body").classList.remove("disable-scroll");
+}
 
 // ------------project-card-scroll----------
 
@@ -260,7 +396,7 @@ timeLine.style.height = document.body.clientHeight - 225 + "px";
 
 // ------------------cursor-------------------------
 
-var links = document.querySelectorAll("a");
+var links = document.querySelectorAll("a, button");
 var cursor = document.querySelector(".cursor");
 var cursorSlow = document.querySelector(".cursor-slow");
 var mouseY = 0;
@@ -270,14 +406,17 @@ var mSize = 1;
 
 window.addEventListener("mousemove",followMouse);
 window.addEventListener("scroll",scrollMouse);
-links.forEach(link=>{
+
+links.forEach(updateMouseSize)
+
+function updateMouseSize(link){
     link.addEventListener("mouseover", ()=>{
         mSize = 2.7;
     });
     link.addEventListener("mouseleave", ()=>{
         mSize = 1;
     });
-});
+};
 
 function followMouse(e){
     mouseY = e.clientY;
