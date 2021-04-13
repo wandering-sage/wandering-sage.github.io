@@ -39,7 +39,7 @@ class TextEffect {
                 if(i>a.length*0.5){
                     return false;
                 }
-                totalTime+=this.delay-10;
+                totalTime+=this.delay-8;
                 var x = arbitrary.charAt(Math.floor(Math.random() * arbitrary.length));
                 arbitrary.replace(x,"");
                 setTimeout(()=>{this.allSpans()[e].innerText=x},totalTime);
