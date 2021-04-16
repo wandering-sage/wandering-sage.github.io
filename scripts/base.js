@@ -388,7 +388,7 @@ window.addEventListener("scroll", scrollAppear);
 // ------------------timeline-------------------------
 
 var timeLine = document.querySelector(".timeline");
-timeLine.style.height = document.body.clientHeight - 225 + "px";
+timeLine.style.height = document.body.clientHeight - 255 + "px";
 
 
 // ------------------cursor-------------------------
