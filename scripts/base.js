@@ -32,16 +32,16 @@ class TextEffect {
 
         adjustSpans.call(this,this.allSpans(),nextWord.length);
 
-        for(var j = 0;j<4;j++){
+        for(var j = 0;j<10;j++){
             var a = createNumSeq(nextWord.length);
             shuffleArray(a);
             a.forEach((e,i)=>{
-                if(i>a.length*0.5){
+                if(i>a.length*0.6){
                     return false;
                 }
-                totalTime+=this.delay-8;
+                totalTime+=this.delay-15;
                 var x = arbitrary.charAt(Math.floor(Math.random() * arbitrary.length));
-                arbitrary.replace(x,"");
+                // arbitrary.replace(x,"");
                 setTimeout(()=>{this.allSpans()[e].innerText=x},totalTime);
             });
         }
@@ -51,8 +51,8 @@ class TextEffect {
         var c = 0;
         a.forEach((e,i)=>{
             var d = (1 - nextWord.length/5)/5; 
-            totalTime+=easeOut(c,this.delay,40,100) + d*this.delay;
-            c+=easeOut(c,this.delay,40,100);
+            totalTime+=easeOut(c,this.delay-5,25,200) + d*this.delay;
+            c+=easeOut(c,this.delay-5,25,200);
             var x = nextWord[e];
             setTimeout(()=>{this.allSpans()[e].innerText=x},totalTime);
         });
@@ -288,11 +288,8 @@ class ProjectCard{
             projContainer.classList.remove("hide");
             projContainer.classList.add("reveal");
 
-            let closeBtn = document.createElement("button", HTMLButtonElement);
-            closeBtn.innerText = "X";
-            closeBtn.className = "proj-close-btn";
-            closeBtn.onclick = closeProject
-            projContainer.append(closeBtn);
+            var closeBtn = document.querySelector(".proj-close-btn");
+            closeBtn.onclick = closeProject;
 
             // Cursor updation
             var links = document.querySelectorAll("a");
@@ -307,7 +304,7 @@ class ProjectCard{
                     projName.classList.remove("cover");
                     projNum.classList.remove("cover");
                 }, 600);
-                projContainer.innerHTML = "";
+
                 enableScroll();
             }
 

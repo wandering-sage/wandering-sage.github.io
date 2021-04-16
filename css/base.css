@@ -214,6 +214,32 @@ body::-webkit-scrollbar-thumb{
     transform: scale3d(1.1,1.1,1);
 }
 
+/* ---------------------------------Avatar------------------------------- */
+
+.hero-anim{
+	position: absolute;
+	width: 15vw;
+	display: inline-block;
+	min-height: 50vh;
+	top: 20%;
+	right: 10%;
+}
+.avatar{
+	width: 15vw;
+	animation: hovering 1.5s ease-in-out infinite alternate;
+}
+.avatar #eyes{
+	animation: blinking 2s ease-in-out infinite 2s;
+	transform-origin: center;
+	transform-box: fill-box;
+}
+.av-shadow{
+	position: absolute;
+	top: 80vh;
+	right: 10vw;
+}
+
+
 /* ---------------------------------cursor------------------------------- */
 
 .cursor {
@@ -580,4 +606,25 @@ a{
 .bullet {
 	position: absolute;
     left: 18%;
+}
+
+@keyframes hovering{
+	from{
+		transform: translateY(0);
+	}
+	to{
+		transform: translateY(30px);
+	}
+}
+
+@keyframes blinking {
+	0%, 18% {
+		transform: scaleY(1);
+	}
+	30%, 32% {
+		transform: scaleY(0);
+	}
+	44%, 100% {
+		transform: scaleY(1);
+	}
 }
