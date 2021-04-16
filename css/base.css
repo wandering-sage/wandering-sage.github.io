@@ -223,10 +223,14 @@ body::-webkit-scrollbar-thumb{
 	min-height: 50vh;
 	top: 20%;
 	right: 10%;
+	transform: translateY(-30%);
+	opacity: 0;
+	transition: 1s ease-out;
 }
 .avatar{
 	width: 15vw;
 	animation: hovering 1.5s ease-in-out infinite alternate;
+	
 }
 .avatar #eyes{
 	animation: blinking 2s ease-in-out infinite 2s;

@@ -188,8 +188,11 @@ function updateActive(x){
 // --------------------------text reveal------------------------------
 
 var h = document.querySelectorAll(".text-hide");
+var avatar = document.querySelector(".hero-anim");
 document.body.onload = ()=>{
     h.forEach(addRemoveClass);
+    avatar.style.transform = "translateY(0)";
+    avatar.style.opacity = "1";
 }
 function addRemoveClass(h){
     h.classList.remove("text-hide");
