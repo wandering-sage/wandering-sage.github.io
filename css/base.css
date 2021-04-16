@@ -234,9 +234,11 @@ body::-webkit-scrollbar-thumb{
 	transform-box: fill-box;
 }
 .av-shadow{
-	position: absolute;
-	top: 80vh;
-	right: 10vw;
+	position: relative;
+	top: 8vh;
+	fill: hsl(252,22%,5%);
+	opacity: 40%;
+	animation: shadow 1.5s ease-in-out infinite alternate;
 }
 
 
@@ -627,4 +629,13 @@ a{
 	44%, 100% {
 		transform: scaleY(1);
 	}
+}
+
+@keyframes shadow {
+	from{
+		transform: scaleX(1);
+	}
+	to{
+		transform: scaleX(1.2);
+	}	
 }
