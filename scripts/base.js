@@ -1,5 +1,4 @@
 // --------------------text change---------------------
-
 class TextEffect {
     constructor(txtElement) {
         this.words = ["websites", "mobile apps", "software", "webapps", "ui/ux", "things" ];
@@ -185,15 +184,28 @@ function updateActive(x){
 }
 
 
-// --------------------------text reveal------------------------------
+// --------------------------On Load / text reveal------------------------------
 
 var h = document.querySelectorAll(".text-hide");
+var loader = document.querySelector(".loader");
 var avatar = document.querySelector(".hero-anim");
+
+disableScroll();
+
 document.body.onload = ()=>{
-    h.forEach(addRemoveClass);
-    avatar.style.transform = "translateY(0)";
-    avatar.style.opacity = "1";
+    document.body.classList.add("show")
+    loader.style.display = "none";
+    enableScroll();
+    
+    setTimeout(()=>{
+        h.forEach(addRemoveClass);
+        avatar.style.transform = "translateY(0)";
+        avatar.style.opacity = "1";
+    }, 500
+    )
+    
 }
+
 function addRemoveClass(h){
     h.classList.remove("text-hide");
     h.classList.add("text-reveal");
@@ -293,6 +305,8 @@ class ProjectCard{
 
             var closeBtn = document.querySelector(".proj-close-btn");
             closeBtn.onclick = closeProject;
+
+            console.log(e.target)
 
             // Cursor updation
             var links = document.querySelectorAll("a");

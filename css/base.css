@@ -35,6 +35,93 @@ body::-webkit-scrollbar-thumb{
 	display: none;
 }
 
+
+/* ---------------------------------Page-Loader------------------------------- */
+
+body::before,
+body::after{
+  content: '';
+  width:100%;
+  position:fixed;
+  left:0;
+  background: #1c2020;
+  z-index:9000;
+  transition: 0.3s ease-out;
+}
+
+body.show::before{
+  transform: translateY(-100%);
+}
+body.show::after{
+	transform: translateY(100%);
+}
+
+body::before{
+  top: 0;
+  height: 47vh;
+}
+body::after{
+  bottom: 0;
+  height: 53vh;
+}
+
+.loader {
+	margin: 0 auto;
+	height: 50px;
+	width: max-content;
+	text-align: center;
+	font-size: 10px;
+	position: absolute;
+	top: 46.5%;
+	left: 50%;
+	transform: translateY(-50%) translateX(-50%);
+	z-index: 9900;
+	opacity: 1;
+}
+.loader span{
+	font-size: 60px;
+	position: relative;
+	top: -20%;
+	margin: 0 20px;
+}
+.loader h2{
+	font-size: 30px;
+	margin-top: 30px;
+}
+.loader>div {
+	  height: 100%;
+	  width: 8px;
+	  display: inline-flex;
+	  flex-direction: row;
+	  margin-left: 2px;
+	  animation: upDown 0.8s infinite ease-in-out;
+}
+	
+.loader .bar1{
+	  background-color: #754fa0 ;
+}
+.loader .bar2{
+	  background-color: #09b7bf;
+	  animation-delay: -0.7s;
+	}
+.loader .bar3{
+	background-color: #90d36b;
+	animation-delay: -0.6s;
+}
+.loader .bar4{
+	background-color: #f2d40d;
+	animation-delay: -0.5s;
+}
+.loader  .bar5{
+	background-color: #fcb12b;
+	animation-delay: -0.4s;
+}
+.loader .bar6{
+	background-color: #ed1b72;
+	animation-delay: -0.3s;
+}
+
+
 /* ---------------------------------Nav-Bar------------------------------- */
 
 .nav-bar {
@@ -273,7 +360,7 @@ body::-webkit-scrollbar-thumb{
 	pointer-events: none;
 	mix-blend-mode: difference;
 	transform-origin: 50% 50%;
-	z-index: 1000;
+	z-index: 10000;
 }
 
 /* ---------------------------------work section------------------------------- */
@@ -643,3 +730,13 @@ a{
 		transform: scaleX(1.2);
 	}	
 }
+
+@keyframes upDown {
+	0%, 40%, 100% { 
+	  transform: scaleY(0.05);
+	  -webkit-transform: scaleY(0.05);
+	}  20% { 
+	  transform: scaleY(1.0);
+	  -webkit-transform: scaleY(1.0);
+	}
+  }
