@@ -193,6 +193,7 @@ var avatar = document.querySelector(".hero-anim");
 disableScroll();
 
 document.body.onload = ()=>{
+    document.body.style.overflowY = "scroll";
     document.body.classList.add("show")
     loader.style.display = "none";
     enableScroll();
@@ -201,7 +202,7 @@ document.body.onload = ()=>{
         h.forEach(addRemoveClass);
         avatar.style.transform = "translateY(0)";
         avatar.style.opacity = "1";
-    }, 500
+    }, 400
     )
     
 }
@@ -463,4 +464,14 @@ function shuffleArray(array) {
 
 function mapValue(val, minFrom, maxFrom, minTo, maxTo) {
 	return ((val - minFrom) / (maxFrom - minFrom)) * (maxTo - minTo) + minTo;
+}
+
+// --------------------------Data------------------------------
+
+var projDesc = {
+    "algo visualizer" : "It ia a Sorting Algorithm Visualizing website made with vanilla JavaScript. \nIt contains various algo like Quick Sort, Merge Sort, etc \nArray Size and Sorting speed are variables that a user can change.",
+    "piano" : "",
+    "recipe box" : "",
+    "canvas" : "A website where you can draw or paint anything. \n",
+    "truth dare" : "A Website where you can play truth-dare with frinds. \nPlayer's turn is decided by a spinning disk with player names written on it. \nYou can add/remove players at any stage of the game. \nA choice b/w truth or dare will be given to the player. \nDepanding on player's choice a random task/question will be asked"
 }
