@@ -216,13 +216,12 @@ function addRemoveClass(h){
 // --------------------------Project card------------------------------
 
 class ProjectCard{
-    constructor(parentEl, name, link, imgUrl, width = 500, height = 250){
+    constructor(parentEl, name, imgUrl, width = 500, height = 250){
         ProjectCard.cardCount++;
         this.parentEl = parentEl;
         this.height = height;
         this.width = width;
         this.imgUrl = imgUrl;
-        this.link = link;
         this.name = name;
         this.createCard();
     }
@@ -237,9 +236,12 @@ class ProjectCard{
 
         // Attaching Link of project
         var aTag = document.createElement("a");
-        aTag.href = this.link;
+        aTag.href = "#";
         wrap.appendChild(aTag);
-        aTag.onclick = runThis;
+        // aTag.onclick = runThis;
+        aTag.addEventListener('click', (e)=>{
+            runThis(e,this);
+        });
 
         var card = document.createElement("div");
 	    card.className = "proj-card";
@@ -250,6 +252,14 @@ class ProjectCard{
             card.style.backgroundImage = `url("${this.imgUrl}")`;
         }
         aTag.appendChild(card);
+
+        var projReavel = document.createElement("div");
+	    projReavel.className = "proj-reveal";
+        card.appendChild(projReavel);
+
+        var curtain = document.createElement("div");
+	    curtain.className = "curtain";
+        projReavel.appendChild(curtain);
 
         // Creating Project Info
         var projData = document.createElement("div");
@@ -290,15 +300,17 @@ class ProjectCard{
             this.style.boxShadow = "none";
             projData.style.transform = "translateZ(0)";
         }
-        function runThis(e){
+        function runThis(e, t){
+            console.log(e);
             e.preventDefault();
             projName.classList.add("cover");
             projNum.classList.add("cover");
+            curtain.classList.add("move");
             root.style.setProperty("--reveal-delay", "0.33s");
             root.style.setProperty("--hide-delay", "0s");
-            setTimeout(openProject,450,e);
+            setTimeout(openProject,450,t);
         }
-        function openProject(e){
+        function openProject(t){
             disableScroll();
             var projContainer = document.querySelector(".open-project");
             projContainer.classList.remove("hide");
@@ -307,7 +319,36 @@ class ProjectCard{
             var closeBtn = document.querySelector(".proj-close-btn");
             closeBtn.onclick = closeProject;
 
-            console.log(e.target)
+            var title = document.querySelector(".proj-title");
+            title.innerText = t.name;
+
+            var img = document.querySelector(".proj-content img");
+            img.setAttribute("src", t.imgUrl);
+
+            var descDiv = document.querySelector(".proj-desc");
+            descDiv.innerText = projDesc[t.name];
+
+            var gitLink = document.querySelector("a.github-btn");
+            gitLink.setAttribute("href", projGithub[t.name]);
+
+            gitLink.addEventListener("mouseenter",()=>{
+                document.querySelector("#code-left").classList.add("backToOriginal");
+                document.querySelector("#code-right").classList.add("backToOriginal");
+            })
+            gitLink.addEventListener("mouseleave",()=>{
+                document.querySelector("#code-left").classList.remove("backToOriginal");
+                document.querySelector("#code-right").classList.remove("backToOriginal");
+            })
+
+            var projLink = document.querySelector("a.launch-btn");
+            projLink.setAttribute("href", projInAction[t.name]);
+
+            projLink.addEventListener("mouseenter", ()=>{
+                document.querySelector("#website").classList.add("backToOriginal");
+            })
+            projLink.addEventListener("mouseleave", ()=>{
+                document.querySelector("#website").classList.remove("backToOriginal");
+            })
 
             // Cursor updation
             var links = document.querySelectorAll("a");
@@ -321,6 +362,7 @@ class ProjectCard{
                 setTimeout(()=>{
                     projName.classList.remove("cover");
                     projNum.classList.remove("cover");
+                    curtain.classList.remove("move");
                 }, 600);
 
                 enableScroll();
@@ -334,13 +376,15 @@ var root = document.documentElement;
 ProjectCard.cardCount = 0;
 ProjectCard.cardPos = [["7%","0"],["23%","115px"], ["70%","-360px"], ["7%","-300px"], ["55%","-400px"]];
 var projects = ["algo visualizer", "piano", "recipe box", "canvas", "truth dare"];
+
 var projContainer = document.querySelector(".project-container");
+
 projects.forEach(p=>{
     if(p == "recipe box"){
         var w = 290;
         var h = 550;
     }
-    new ProjectCard(projContainer, p, "#", `./images/projects/${p}.png`,w,h);
+    new ProjectCard(projContainer, p, `./images/projects/${p}.png`,w,h);
 });
 
 // To diable Scroll when project is shown
@@ -406,7 +450,7 @@ window.addEventListener("scroll", scrollAppear);
 // ------------------timeline-------------------------
 
 var timeLine = document.querySelector(".timeline");
-timeLine.style.height = document.body.clientHeight - 255 + "px";
+timeLine.style.height = document.body.clientHeight - 225 + "px";
 
 
 // ------------------cursor-------------------------
@@ -470,8 +514,24 @@ function mapValue(val, minFrom, maxFrom, minTo, maxTo) {
 
 var projDesc = {
     "algo visualizer" : "It ia a Sorting Algorithm Visualizing website made with vanilla JavaScript. \nIt contains various algo like Quick Sort, Merge Sort, etc \nArray Size and Sorting speed are variables that a user can change.",
-    "piano" : "",
-    "recipe box" : "",
-    "canvas" : "A website where you can draw or paint anything. \n",
+    "piano" : "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste quidem nisi blanditiis error, consectetur similique aliquid ex vitae sequi nulla sapiente ipsam earum necessitatibus in doloribus suscipit laudantium amet. Itaque blanditiis nemo nobis doloribus nam, nulla quibusdam ex similique odio illum quia fuga molestias dolore repellendus expedita eaque iusto quaerat.",
+    "recipe box" : "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste quidem nisi blanditiis error, consectetur similique aliquid ex vitae sequi nulla sapiente ipsam earum necessitatibus in doloribus suscipit laudantium amet. Itaque blanditiis nemo nobis doloribus nam, nulla quibusdam ex similique odio illum quia fuga molestias dolore repellendus expedita eaque iusto quaerat.",
+    "canvas" : "A website where you can draw or paint anything. \nLorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda consequuntur, laborum quam vel quas architecto accusamus quidem inventore amet aut?",
     "truth dare" : "A Website where you can play truth-dare with frinds. \nPlayer's turn is decided by a spinning disk with player names written on it. \nYou can add/remove players at any stage of the game. \nA choice b/w truth or dare will be given to the player. \nDepanding on player's choice a random task/question will be asked"
+}
+
+var projGithub = {
+    "algo visualizer" : "https://github.com/wandering-sage/Algo-Visualizer",
+    "piano" : "https://github.com/wandering-sage/Piano",
+    "recipe box" : "https://github.com/wandering-sage/RecipeBox",
+    "canvas" : "https://github.com/wandering-sage/Canvas",
+    "truth dare" : "https://github.com/wandering-sage/Truth-Dare"
+}
+
+var projInAction = {
+    "algo visualizer" : "https://wandering-sage.github.io/Algo-Visualizer/",
+    "piano" : "https://wandering-sage.github.io/Piano/",
+    "recipe box" : "https://github.com/wandering-sage/RecipeBox",
+    "canvas" : "https://wandering-sage.github.io/Canvas/",
+    "truth dare" : "https://wandering-sage.github.io/Truth-Dare/"
 }
