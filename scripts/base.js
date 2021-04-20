@@ -435,7 +435,7 @@ function enableScroll() {
 
 function scrollAppear(){
     var list = document.querySelectorAll(".proj-card");
-    var screenPos = window.innerHeight / 1.5;
+    var screenPos = window.innerHeight / 1.25;
     list.forEach(e=>{
         if(e.getBoundingClientRect().top < screenPos && !e.classList.contains("appear-on-scroll")){
             e.classList.add("appear-on-scroll");
