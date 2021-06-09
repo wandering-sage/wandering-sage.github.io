@@ -326,7 +326,7 @@ class ProjectCard{
             img.setAttribute("src", t.imgUrl);
 
             var descDiv = document.querySelector(".proj-desc");
-            descDiv.innerText = projDesc[t.name];
+            descDiv.innerHTML = makeList(projDesc[t.name]);
 
             var gitLink = document.querySelector("a.github-btn");
             gitLink.setAttribute("href", projGithub[t.name]);
@@ -368,6 +368,15 @@ class ProjectCard{
                 enableScroll();
             }
 
+            function makeList(arr){
+                var ret = "<ul>";
+                arr.forEach(str=>{
+                    ret += `<li>${str}</li>`;
+                })
+                ret+="</ul>";
+                return ret;
+            }
+
         }
     }
 }
@@ -375,7 +384,7 @@ var root = document.documentElement;
 
 ProjectCard.cardCount = 0;
 ProjectCard.cardPos = [["7%","0"],["23%","115px"], ["70%","-360px"], ["7%","-300px"], ["55%","-400px"]];
-var projects = ["algo visualizer", "piano", "recipe box", "canvas", "truth dare"];
+var projects = ["algo visualizer", "algo snake", "recipe box", "piano", "canvas"];
 
 var projContainer = document.querySelector(".project-container");
 
@@ -456,7 +465,7 @@ timeLine.style.height = document.body.clientHeight - 225 + "px";
 // ------------------cursor-------------------------
 
 var links = document.querySelectorAll("a, button");
-var cursor = document.querySelector(".cursor");
+// var cursor = document.querySelector(".cursor");
 var cursorSlow = document.querySelector(".cursor-slow");
 var mouseY = 0;
 var mouseX = 0;
@@ -480,7 +489,7 @@ function updateMouseSize(link){
 function followMouse(e){
     mouseY = e.clientY;
     mouseX = e.pageX;
-    cursor.style.transform = `translateX(${e.pageX}px) translateY(${e.pageY}px) translate(-50%,-50%)`;
+    // cursor.style.transform = `translateX(${e.pageX}px) translateY(${e.pageY}px) translate(-50%,-50%)`;
     cursorSlow.style.transform = `translateX(${e.pageX}px) translateY(${e.pageY}px) translate(-50%,-50%) scale(${mSize})`;
 
     if(e.clientY < 40 && navBar.classList.contains("nav-hide")){
@@ -489,7 +498,7 @@ function followMouse(e){
 }
 
 function scrollMouse(){
-    cursor.style.transform = `translateX(${mouseX}px) translateY(${mouseY + window.scrollY}px) translate(-50%,-50%)`;
+    // cursor.style.transform = `translateX(${mouseX}px) translateY(${mouseY + window.scrollY}px) translate(-50%,-50%)`;
     cursorSlow.style.transform = `translateX(${mouseX}px) translateY(${mouseY + window.scrollY}px) translate(-50%,-50%) scale(${mSize})`;
 }
 
@@ -513,11 +522,13 @@ function mapValue(val, minFrom, maxFrom, minTo, maxTo) {
 // --------------------------Data------------------------------
 
 var projDesc = {
-    "algo visualizer" : "It ia a Sorting Algorithm Visualizing website made with vanilla JavaScript. \nIt contains various algo like Quick Sort, Merge Sort, etc \nArray Size and Sorting speed are variables that a user can change.",
-    "piano" : "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste quidem nisi blanditiis error, consectetur similique aliquid ex vitae sequi nulla sapiente ipsam earum necessitatibus in doloribus suscipit laudantium amet. Itaque blanditiis nemo nobis doloribus nam, nulla quibusdam ex similique odio illum quia fuga molestias dolore repellendus expedita eaque iusto quaerat.",
-    "recipe box" : "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste quidem nisi blanditiis error, consectetur similique aliquid ex vitae sequi nulla sapiente ipsam earum necessitatibus in doloribus suscipit laudantium amet. Itaque blanditiis nemo nobis doloribus nam, nulla quibusdam ex similique odio illum quia fuga molestias dolore repellendus expedita eaque iusto quaerat.",
-    "canvas" : "A website where you can draw or paint anything. \nLorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda consequuntur, laborum quam vel quas architecto accusamus quidem inventore amet aut?",
-    "truth dare" : "A Website where you can play truth-dare with frinds. \nPlayer's turn is decided by a spinning disk with player names written on it. \nYou can add/remove players at any stage of the game. \nA choice b/w truth or dare will be given to the player. \nDepanding on player's choice a random task/question will be asked"
+    "algo visualizer" : ["This is a Sorting Algorithm Visualizing website, made with vanilla JavaScript.", "It contains various algo like Quick Sort, Merge Sort, etc", "Array Size and Sorting speed can be controlled by user."],
+    "piano" : ["This is website to play piano.", ""],
+    "recipe box" : ["Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste quidem nisi blanditiis error, consectetur similique aliquid ex vitae sequi nulla sapiente ipsam earum necessitatibus in doloribus suscipit laudantium amet. Itaque blanditiis nemo nobis doloribus nam, nulla quibusdam ex similique odio illum quia fuga molestias dolore repellendus expedita eaque iusto quaerat."],
+    "canvas" : ["A website where you can draw or paint anything.", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda consequuntur, laborum quam vel quas architecto accusamus quidem inventore amet aut?"],
+    "truth dare" : ["A Website where you can play truth-dare with frinds.", "Player's turn is decided by a spinning disk with player names written on it.", "You can add/remove players at any stage of the game.", "A choice b/w truth or dare will be given to the player.", "Depanding on player's choice a random task/question will be asked"],
+    "algo snake" : ["Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste quidem nisi blanditiis error, consectetur similique aliquid ex vitae sequi nulla sapiente ipsam earum necessitatibus in doloribus suscipit laudantium amet. Itaque blanditiis nemo nobis doloribus nam, nulla quibusdam ex similique odio illum quia fuga molestias dolore repellendus expedita eaque iusto quaerat."],
+
 }
 
 var projGithub = {
@@ -525,7 +536,8 @@ var projGithub = {
     "piano" : "https://github.com/wandering-sage/Piano",
     "recipe box" : "https://github.com/wandering-sage/RecipeBox",
     "canvas" : "https://github.com/wandering-sage/Canvas",
-    "truth dare" : "https://github.com/wandering-sage/Truth-Dare"
+    "truth dare" : "https://github.com/wandering-sage/Truth-Dare",
+    "algo snake" : "https://github.com/wandering-sage/algo-snake"
 }
 
 var projInAction = {
@@ -533,5 +545,6 @@ var projInAction = {
     "piano" : "https://wandering-sage.github.io/Piano/",
     "recipe box" : "https://github.com/wandering-sage/RecipeBox",
     "canvas" : "https://wandering-sage.github.io/Canvas/",
-    "truth dare" : "https://wandering-sage.github.io/Truth-Dare/"
+    "truth dare" : "https://wandering-sage.github.io/Truth-Dare/",
+    "algo snake" : "https://wandering-sage.github.io/algo-snake"
 }
