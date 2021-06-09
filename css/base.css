@@ -143,6 +143,11 @@ body::after{
 	color: azure;
 	text-decoration: none;
 }
+.logo>img{
+	height: 50px;
+	margin: 0 -15px -15px 0;
+	/* padding: 15px; */
+}
 
 .nav-links {
 	display: flex;
