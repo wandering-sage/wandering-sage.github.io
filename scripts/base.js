@@ -1,3 +1,5 @@
+var mediaQuery = window.matchMedia('(max-width: 550px)');
+
 // --------------------text change---------------------
 class TextEffect {
     constructor(txtElement) {
@@ -312,12 +314,21 @@ class ProjectCard{
         }
         function openProject(t){
             disableScroll();
+            history.pushState(null, null, location.href);
+            window.onpopstate = function () {
+                if(document.querySelector(".open-project").classList.contains("reveal")){
+                    closeProject();
+                }
+            };
             var projContainer = document.querySelector(".open-project");
             projContainer.classList.remove("hide");
             projContainer.classList.add("reveal");
 
             var closeBtn = document.querySelector(".proj-close-btn");
-            closeBtn.onclick = closeProject;
+            closeBtn.onclick = ()=>{
+                history.back();
+                closeProject();
+            }
 
             var title = document.querySelector(".proj-title");
             title.innerText = t.name;
@@ -354,6 +365,14 @@ class ProjectCard{
             var links = document.querySelectorAll("a");
             links.forEach(updateMouseSize);
 
+            if(mediaQuery.matches){
+                setTimeout(()=>{
+                    document.querySelector("#code-left").classList.add("backToOriginal");
+                    document.querySelector("#code-right").classList.add("backToOriginal");
+                    document.querySelector("#website").classList.add("backToOriginal");
+                }, 600);
+            }
+
             function closeProject(){
                 root.style.setProperty("--reveal-delay", "0s");
                 root.style.setProperty("--hide-delay", "0.33s");
@@ -365,6 +384,11 @@ class ProjectCard{
                     curtain.classList.remove("move");
                 }, 600);
 
+                if(mediaQuery.matches){
+                    document.querySelector("#code-left").classList.remove("backToOriginal");
+                    document.querySelector("#code-right").classList.remove("backToOriginal");
+                    document.querySelector("#website").classList.remove("backToOriginal");
+                }
                 enableScroll();
             }
 
@@ -392,6 +416,15 @@ projects.forEach(p=>{
     if(p == "recipe box"){
         var w = 290;
         var h = 550;
+    }
+    if(mediaQuery.matches){
+        ProjectCard.cardPos = [["25%","150px"],["25%","215px"], ["25%","280px"], ["25%","345px"], ["25%","405px"]];
+        var w = 220;
+        var h = 110;
+        if(p == "recipe box"){
+            var w = 130;
+            var h = 250;
+        }
     }
     new ProjectCard(projContainer, p, `./images/projects/${p}.png`,w,h);
 });
@@ -502,7 +535,21 @@ function scrollMouse(){
     cursorSlow.style.transform = `translateX(${mouseX}px) translateY(${mouseY + window.scrollY}px) translate(-50%,-50%) scale(${mSize})`;
 }
 
+// ------------------------------------media-query---------------------------------------
 
+var findMeOnText = [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>Github`,
+    `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M5 3c0 1.062-0.71 1.976-2.001 1.976-1.215 0-1.999-0.862-1.999-1.924 0-1.090 0.76-2.052 2-2.052s1.976 0.91 2 2zM1 19v-13h4v13h-4z"></path> <path d="M7 10.444c0-1.545-0.051-2.836-0.102-3.951h3.594l0.178 1.723h0.076c0.506-0.811 1.746-2 3.822-2 2.532 0 4.432 1.695 4.432 5.342v7.442h-4v-6.861c0-1.594-0.607-2.81-2-2.81-1.062 0-1.594 0.86-1.873 1.569-0.102 0.254-0.127 0.608-0.127 0.963v7.139h-4v-8.556z"></path></svg>Linkedin`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 390.04"><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path d="M512,24.14V365.9A24.14,24.14,0,0,1,487.85,390H452.29V94.51L256,237.58,59.71,94.51V390H24.14A24.14,24.14,0,0,1,0,365.9V24.14A24.14,24.14,0,0,1,24.14,0h14L256,158.81,473.89,0h14A24.14,24.14,0,0,1,512,24.14Z"/></g></g></svg>Gmail`,
+]
+
+
+if(mediaQuery.matches){
+    var contacts = document.querySelectorAll(".social-container a");
+    contacts.forEach((e,i)=>{
+        e.innerHTML = findMeOnText[i];
+    })
+}
 
 // --------------------------utils------------------------------
 
@@ -523,11 +570,11 @@ function mapValue(val, minFrom, maxFrom, minTo, maxTo) {
 
 var projDesc = {
     "algo visualizer" : ["This is a Sorting Algorithm Visualizing website, made with vanilla JavaScript.", "It contains various algo like Quick Sort, Merge Sort, etc", "Array Size and Sorting speed can be controlled by user."],
-    "piano" : ["This is website to play piano.", ""],
-    "recipe box" : ["Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste quidem nisi blanditiis error, consectetur similique aliquid ex vitae sequi nulla sapiente ipsam earum necessitatibus in doloribus suscipit laudantium amet. Itaque blanditiis nemo nobis doloribus nam, nulla quibusdam ex similique odio illum quia fuga molestias dolore repellendus expedita eaque iusto quaerat."],
-    "canvas" : ["A website where you can draw or paint anything.", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda consequuntur, laborum quam vel quas architecto accusamus quidem inventore amet aut?"],
+    "piano" : ["This is website to play piano using keyboard keys.", "It also have some pre-loaded songs which can be played by hitting the green Autoplay button.", "Usear can create their own sequence of keys to be played under Custom song"],
+    "recipe box" : ["This is an Android app containing a lot of common recipes", " You need to log in to use this app, if you dont have an account you can create a new one.", "User can search, view and create recipes. They can also update their profile"],
+    "canvas" : ["A website where you can draw or paint anything.", "It have tools like Brush Tool, Eraser Tool and Bucket Tool.", "User can download what they have created as a png image."],
     "truth dare" : ["A Website where you can play truth-dare with frinds.", "Player's turn is decided by a spinning disk with player names written on it.", "You can add/remove players at any stage of the game.", "A choice b/w truth or dare will be given to the player.", "Depanding on player's choice a random task/question will be asked"],
-    "algo snake" : ["Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste quidem nisi blanditiis error, consectetur similique aliquid ex vitae sequi nulla sapiente ipsam earum necessitatibus in doloribus suscipit laudantium amet. Itaque blanditiis nemo nobis doloribus nam, nulla quibusdam ex similique odio illum quia fuga molestias dolore repellendus expedita eaque iusto quaerat."],
+    "algo snake" : ["This is a web-app where you can play snake game and visualize path finding algorithms at any state of the game.", "It has \"Autoplay\" mode, where computer calculates the best path using A-star Algorithm and plays the game in real time", "Users can pause the game and visualize Dijkstra’s Algorithm and A-star Algorithm"],
 
 }
 

@@ -407,15 +407,15 @@ body::after{
 
 .proj-content img{
 	height: 50vh;
-	margin-bottom: 5vh;
+	margin-bottom: 7vh;
 }
 
 .proj-desc{
 	font-size: 1.2em;
-	font-family:'Open Sans', sans-serif;
 	text-align: left;
 }
 .proj-desc li{
+	font-family:'Roboto', sans-serif;
 	margin-bottom: 7px;
 }
 
@@ -476,6 +476,7 @@ body::after{
 	position: absolute;
 	top: 7%;
 	right: 7%;
+	cursor: pointer;
 }
 .proj-close-btn:hover {
 	color: #7231f8;
