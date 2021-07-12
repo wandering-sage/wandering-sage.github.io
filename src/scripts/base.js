@@ -1,13 +1,12 @@
 // --------------------text change---------------------
-
 class TextEffect {
     constructor(txtElement) {
         this.words = ["websites", "mobile apps", "software", "webapps", "ui/ux", "things" ];
-        this.possible = "\\_{ßæ+$ç^]©>å}[§ÆÄΩΣ~¢Δ()ßØσ€ƒ«∞£ΣεÐ≈»√Ξξ∫πÃΩδγ€μΨΖζÄÖÜ";
+        this.possible = "\\_{ßæ+$ç^♪]©>@¥å}[§Æ&ΩΣ~░¢Δ#ßØσ░▓€ƒ«∞£Σ&≈@¥#εÐΔ≈»√ΞΔξ∫πÃΩδγ€μΨΖζ";
         this.txtElement = txtElement;
         this.wordIndex = 0;
         this.wait = 2000;
-        this.delay = 40;
+        this.delay = 20;
         this.spanThis(this.words[0]);
         setTimeout(()=>this.toNextWord(), this.wait);
     }
@@ -18,7 +17,7 @@ class TextEffect {
         var arbitrary = this.possible;
 
         a.every((e,i)=>{
-            if(i>a.length*0.8){
+            if(i>a.length*0.5){
                 return false;
             }
             totalTime+=this.delay;
@@ -30,16 +29,37 @@ class TextEffect {
         this.wordIndex %= this.words.length;
         var nextWord = this.words[this.wordIndex];
 
-        adjustSpans.call(this,this.allSpans(),nextWord.length)
+        adjustSpans.call(this,this.allSpans(),nextWord.length);
+
+        for(var j = 0;j<10;j++){
+            var a = createNumSeq(nextWord.length);
+            shuffleArray(a);
+            a.forEach((e,i)=>{
+                if(i>a.length*0.6){
+                    return false;
+                }
+                totalTime+=this.delay-15;
+                var x = arbitrary.charAt(Math.floor(Math.random() * arbitrary.length));
+                // arbitrary.replace(x,"");
+                setTimeout(()=>{this.allSpans()[e].innerText=x},totalTime);
+            });
+        }
         
         var a = createNumSeq(nextWord.length);
         shuffleArray(a);
+        var c = 0;
         a.forEach((e,i)=>{
-            totalTime+=this.delay;
+            var d = (1 - nextWord.length/5)/5; 
+            totalTime+=easeOut(c,this.delay-5,25,200) + d*this.delay;
+            c+=easeOut(c,this.delay-5,25,200);
             var x = nextWord[e];
             setTimeout(()=>{this.allSpans()[e].innerText=x},totalTime);
         });
         setTimeout(()=>this.toNextWord(), this.wait);
+
+        function easeOut(t, b, c, d) {
+            return b + (c-b)*(1-(1-t/d)*(1-t/d));
+        };
 
         function createNumSeq(l) {
             var res = [];
@@ -124,23 +144,69 @@ function smoothScroll(target, duration) {
     requestAnimationFrame(scrollAnimation);
 }
 
-var navLinks = document.querySelectorAll(".nav-link, .scroll-bottom");
+var navLinks = document.querySelectorAll(".nav-link");
 
-navLinks.forEach(l=>{
+var scrollLinks = document.querySelectorAll(".scroll-bottom");
+
+scrollLinks.forEach(addScrollClick);
+navLinks.forEach(addScrollClick);
+    
+function addScrollClick(l){
     l.addEventListener("click",e=>{
         e.preventDefault();
         var t = e.target.getAttribute('href') || e.target.parentElement.getAttribute('href');
-        smoothScroll(t, 800);
+        if(t){
+            smoothScroll(t, 800);
+        }
     })
-});
+}
 
 
-// --------------------------text reveal------------------------------
+// --------------------------nav-bar-highlight------------------------------
+
+window.addEventListener("scroll", findActive);
+var idxActive = 0;
+
+function findActive(){
+    var curViewOn = document.querySelector(navLinks[idxActive].children[0].getAttribute('href'));
+    if(curViewOn.getBoundingClientRect().bottom<50){
+        updateActive(idxActive+1);
+    }
+    if(curViewOn.getBoundingClientRect().bottom>curViewOn.getBoundingClientRect().height+50){
+        updateActive(idxActive-1);
+    }
+}
+
+function updateActive(x){
+    navLinks[idxActive].classList.remove("active");
+    navLinks[x].classList.add("active");
+    idxActive = x;
+}
+
+
+// --------------------------On Load / text reveal------------------------------
 
 var h = document.querySelectorAll(".text-hide");
+var loader = document.querySelector(".loader");
+var avatar = document.querySelector(".hero-anim");
+
+disableScroll();
+
 document.body.onload = ()=>{
-    h.forEach(e=>addRemoveClass(e));
+    document.body.style.overflowY = "scroll";
+    document.body.classList.add("show")
+    loader.style.display = "none";
+    enableScroll();
+    
+    setTimeout(()=>{
+        h.forEach(addRemoveClass);
+        avatar.style.transform = "translateY(0)";
+        avatar.style.opacity = "1";
+    }, 400
+    )
+    
 }
+
 function addRemoveClass(h){
     h.classList.remove("text-hide");
     h.classList.add("text-reveal");
@@ -150,13 +216,12 @@ function addRemoveClass(h){
 // --------------------------Project card------------------------------
 
 class ProjectCard{
-    constructor(parentEl, name, link, imgUrl, width = 500, height = 250){
+    constructor(parentEl, name, imgUrl, width = 500, height = 250){
         ProjectCard.cardCount++;
         this.parentEl = parentEl;
         this.height = height;
         this.width = width;
         this.imgUrl = imgUrl;
-        this.link = link;
         this.name = name;
         this.createCard();
     }
@@ -171,23 +236,36 @@ class ProjectCard{
 
         // Attaching Link of project
         var aTag = document.createElement("a");
-        aTag.href = this.link;
+        aTag.href = "#";
         wrap.appendChild(aTag);
+        // aTag.onclick = runThis;
+        aTag.addEventListener('click', (e)=>{
+            runThis(e,this);
+        });
 
         var card = document.createElement("div");
 	    card.className = "proj-card";
         card.style.width = this.width + "px";
         card.style.height = this.height+ "px";
+        card.setAttribute("data-id",ProjectCard.cardCount);
         if(this.imgUrl){
             card.style.backgroundImage = `url("${this.imgUrl}")`;
         }
         aTag.appendChild(card);
 
+        var projReavel = document.createElement("div");
+	    projReavel.className = "proj-reveal";
+        card.appendChild(projReavel);
+
+        var curtain = document.createElement("div");
+	    curtain.className = "curtain";
+        projReavel.appendChild(curtain);
+
         // Creating Project Info
         var projData = document.createElement("div");
 	    projData.className = "proj-data";
         card.appendChild(projData);
-        var projName = document.createElement("span");
+        var projName = document.createElement("div");
         projName.className = "proj-name";
         projData.appendChild(projName);
         var divider = document.createElement("div");
@@ -222,25 +300,142 @@ class ProjectCard{
             this.style.boxShadow = "none";
             projData.style.transform = "translateZ(0)";
         }
+        function runThis(e, t){
+            console.log(e);
+            e.preventDefault();
+            projName.classList.add("cover");
+            projNum.classList.add("cover");
+            curtain.classList.add("move");
+            root.style.setProperty("--reveal-delay", "0.33s");
+            root.style.setProperty("--hide-delay", "0s");
+            setTimeout(openProject,450,t);
+        }
+        function openProject(t){
+            disableScroll();
+            var projContainer = document.querySelector(".open-project");
+            projContainer.classList.remove("hide");
+            projContainer.classList.add("reveal");
+
+            var closeBtn = document.querySelector(".proj-close-btn");
+            closeBtn.onclick = closeProject;
+
+            var title = document.querySelector(".proj-title");
+            title.innerText = t.name;
+
+            var img = document.querySelector(".proj-content img");
+            img.setAttribute("src", t.imgUrl);
+
+            var descDiv = document.querySelector(".proj-desc");
+            descDiv.innerText = projDesc[t.name];
+
+            var gitLink = document.querySelector("a.github-btn");
+            gitLink.setAttribute("href", projGithub[t.name]);
+
+            gitLink.addEventListener("mouseenter",()=>{
+                document.querySelector("#code-left").classList.add("backToOriginal");
+                document.querySelector("#code-right").classList.add("backToOriginal");
+            })
+            gitLink.addEventListener("mouseleave",()=>{
+                document.querySelector("#code-left").classList.remove("backToOriginal");
+                document.querySelector("#code-right").classList.remove("backToOriginal");
+            })
+
+            var projLink = document.querySelector("a.launch-btn");
+            projLink.setAttribute("href", projInAction[t.name]);
+
+            projLink.addEventListener("mouseenter", ()=>{
+                document.querySelector("#website").classList.add("backToOriginal");
+            })
+            projLink.addEventListener("mouseleave", ()=>{
+                document.querySelector("#website").classList.remove("backToOriginal");
+            })
+
+            // Cursor updation
+            var links = document.querySelectorAll("a");
+            links.forEach(updateMouseSize);
+
+            function closeProject(){
+                root.style.setProperty("--reveal-delay", "0s");
+                root.style.setProperty("--hide-delay", "0.33s");
+                projContainer.classList.remove("reveal");
+                projContainer.classList.add("hide");
+                setTimeout(()=>{
+                    projName.classList.remove("cover");
+                    projNum.classList.remove("cover");
+                    curtain.classList.remove("move");
+                }, 600);
+
+                enableScroll();
+            }
+
+        }
     }
 }
+var root = document.documentElement;
+
 ProjectCard.cardCount = 0;
 ProjectCard.cardPos = [["7%","0"],["23%","115px"], ["70%","-360px"], ["7%","-300px"], ["55%","-400px"]];
 var projects = ["algo visualizer", "piano", "recipe box", "canvas", "truth dare"];
+
 var projContainer = document.querySelector(".project-container");
+
 projects.forEach(p=>{
     if(p == "recipe box"){
         var w = 290;
         var h = 550;
     }
-    new ProjectCard(projContainer, p, "#", `./images/projects/${p}.png`,w,h);
+    new ProjectCard(projContainer, p, `./images/projects/${p}.png`,w,h);
 });
+
+// To diable Scroll when project is shown
+
+var keys = {37: 1, 38: 1, 39: 1, 40: 1};
+
+function preventDefault(e) {
+    e.preventDefault();
+}
+
+function preventDefaultForScrollKeys(e) {
+    if (keys[e.keyCode]) {
+        preventDefault(e);
+        return false;
+    }
+}
+
+// modern Chrome requires { passive: false } when adding event
+var supportsPassive = false;
+try {
+    window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
+        get: function () { supportsPassive = true; } 
+    }));
+} catch(e) {}
+
+var wheelOpt = supportsPassive ? { passive: false } : false;
+var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+
+// call this to Disable
+function disableScroll() {
+    window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
+    window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
+    window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
+    window.addEventListener('keydown', preventDefaultForScrollKeys, false);
+    document.querySelector("body").classList.add("disable-scroll");
+}
+
+// call this to Enable
+function enableScroll() {
+    window.removeEventListener('DOMMouseScroll', preventDefault, false);
+    window.removeEventListener(wheelEvent, preventDefault, wheelOpt); 
+    window.removeEventListener('touchmove', preventDefault, wheelOpt);
+    window.removeEventListener('keydown', preventDefaultForScrollKeys, false);
+    document.querySelector("body").classList.remove("disable-scroll");
+}
 
 // ------------project-card-scroll----------
 
 function scrollAppear(){
     var list = document.querySelectorAll(".proj-card");
-    var screenPos = window.innerHeight / 1.5;
+    var screenPos = window.innerHeight / 1.25;
     list.forEach(e=>{
         if(e.getBoundingClientRect().top < screenPos && !e.classList.contains("appear-on-scroll")){
             e.classList.add("appear-on-scroll");
@@ -260,7 +455,7 @@ timeLine.style.height = document.body.clientHeight - 225 + "px";
 
 // ------------------cursor-------------------------
 
-var links = document.querySelectorAll("a");
+var links = document.querySelectorAll("a, button");
 var cursor = document.querySelector(".cursor");
 var cursorSlow = document.querySelector(".cursor-slow");
 var mouseY = 0;
@@ -270,14 +465,17 @@ var mSize = 1;
 
 window.addEventListener("mousemove",followMouse);
 window.addEventListener("scroll",scrollMouse);
-links.forEach(link=>{
+
+links.forEach(updateMouseSize)
+
+function updateMouseSize(link){
     link.addEventListener("mouseover", ()=>{
         mSize = 2.7;
     });
     link.addEventListener("mouseleave", ()=>{
         mSize = 1;
     });
-});
+};
 
 function followMouse(e){
     mouseY = e.clientY;
@@ -310,4 +508,30 @@ function shuffleArray(array) {
 
 function mapValue(val, minFrom, maxFrom, minTo, maxTo) {
 	return ((val - minFrom) / (maxFrom - minFrom)) * (maxTo - minTo) + minTo;
+}
+
+// --------------------------Data------------------------------
+
+var projDesc = {
+    "algo visualizer" : "It ia a Sorting Algorithm Visualizing website made with vanilla JavaScript. \nIt contains various algo like Quick Sort, Merge Sort, etc \nArray Size and Sorting speed are variables that a user can change.",
+    "piano" : "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste quidem nisi blanditiis error, consectetur similique aliquid ex vitae sequi nulla sapiente ipsam earum necessitatibus in doloribus suscipit laudantium amet. Itaque blanditiis nemo nobis doloribus nam, nulla quibusdam ex similique odio illum quia fuga molestias dolore repellendus expedita eaque iusto quaerat.",
+    "recipe box" : "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste quidem nisi blanditiis error, consectetur similique aliquid ex vitae sequi nulla sapiente ipsam earum necessitatibus in doloribus suscipit laudantium amet. Itaque blanditiis nemo nobis doloribus nam, nulla quibusdam ex similique odio illum quia fuga molestias dolore repellendus expedita eaque iusto quaerat.",
+    "canvas" : "A website where you can draw or paint anything. \nLorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda consequuntur, laborum quam vel quas architecto accusamus quidem inventore amet aut?",
+    "truth dare" : "A Website where you can play truth-dare with frinds. \nPlayer's turn is decided by a spinning disk with player names written on it. \nYou can add/remove players at any stage of the game. \nA choice b/w truth or dare will be given to the player. \nDepanding on player's choice a random task/question will be asked"
+}
+
+var projGithub = {
+    "algo visualizer" : "https://github.com/wandering-sage/Algo-Visualizer",
+    "piano" : "https://github.com/wandering-sage/Piano",
+    "recipe box" : "https://github.com/wandering-sage/RecipeBox",
+    "canvas" : "https://github.com/wandering-sage/Canvas",
+    "truth dare" : "https://github.com/wandering-sage/Truth-Dare"
+}
+
+var projInAction = {
+    "algo visualizer" : "https://wandering-sage.github.io/Algo-Visualizer/",
+    "piano" : "https://wandering-sage.github.io/Piano/",
+    "recipe box" : "https://github.com/wandering-sage/RecipeBox",
+    "canvas" : "https://wandering-sage.github.io/Canvas/",
+    "truth dare" : "https://wandering-sage.github.io/Truth-Dare/"
 }
