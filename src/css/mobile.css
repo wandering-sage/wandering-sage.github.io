@@ -1,0 +1,145 @@
+@media only screen and (max-width: 550px) {
+  .cursor-slow{
+      display: none;
+      opacity: 0;
+  }
+  .nav-bar{
+      display: none;
+      opacity: 0;
+  }
+  .avatar {
+      width: 33vw;
+  }
+  .hero-anim {
+      width: 33vw;
+      top: 2%;
+      right: 30%;
+      transform: translateY(-30%);
+      opacity: 0;
+      transition: 1s ease-out;
+  }
+  .timeline{
+      left: 40px;
+      top: 42.5%;
+  }
+  .start.container {
+      align-items: flex-end;
+  }
+  .start-content h1 {
+      font-size: 30px;
+  }
+  .spl-txt::before{
+      content: "\A";
+      white-space: pre;
+  }
+  .section-title {
+      font-size: 18px;
+  }
+  .start-content > :last-child{
+      font-size: 22px;
+  }
+  .scroll-bottom {
+      top: 250px;
+  }
+  .info-text {
+      font-size: 60px;
+      left: 40%;
+      right: 0;
+  }
+  .timeline .bullet{
+      left: 18%;
+  }
+  .bullet{
+      left: 40.5px;
+  }
+  .proj-data {
+      width: 100px;
+      height: auto;
+      bottom: 0px;
+      left: -35px;
+  }
+  .proj-data .proj-name {
+      font-size: 20px;
+  }
+  .proj-data .divider {
+      height: 2px;
+      margin: 8px 0px 10px;
+  }
+  .proj-content {
+      left: 15vw;
+      top: 5vh;
+      text-align: center;
+      max-width: 70vw;
+  }
+  .proj-title {
+      font-size: 30px;
+  }
+  .proj-content img {
+      height: 15vh;
+      margin-bottom: 7vh;
+  }
+  .proj-desc {
+      font-size: 15px;
+      text-align: left;
+  }
+  .proj-close-btn {
+      top: 3%;
+  }
+  .launch-btn {
+      top: 74.2vh;
+      right: 60vw;
+  }
+  .launch-btn svg{
+      height: 100px;
+  }
+  .launch-btn::after{
+      position: absolute;
+      width: max-content;
+      top: 105%;
+      left: 50%;
+      transform: translateX(-50%);
+      content: "Visit Project";
+      background: #000;
+      color: #f9f9f9;
+      font-size: 17px;
+      padding: 1.5px 6px 4px 6px;
+      font-family:'Open Sans', sans-serif;
+      font-weight: 400;
+      border-radius: 7px;
+  }
+  .github-btn {
+      top: 75vh;
+      right: 10vw;
+  }
+  .github-btn svg{
+      height: 92.5px;
+  }
+  .github-btn::after{
+      position: absolute;
+      width: max-content;
+      top: 105%;
+      left: 50%;
+      transform: translateX(-50%);
+      content: "View Code";
+      background: #000;
+      color: #f9f9f9;
+      font-size: 17px;
+      padding: 1.5px 6px 4px 6px;
+      font-family:'Open Sans', sans-serif;
+      font-weight: 400;
+      border-radius: 7px;
+  }
+  .c-line:after {
+      left: -55px;
+      font-size: 14px;
+      line-height: 1.4;
+  }
+  .code-container {
+      font-size: 14px;
+      line-height: 1.4;
+      padding-bottom: 40px;
+  }
+  .contact .content {
+      max-width: 75%;        
+  }
+}
