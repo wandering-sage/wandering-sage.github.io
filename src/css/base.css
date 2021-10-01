@@ -77,6 +77,7 @@ body::after{
 	transform: translateY(-50%) translateX(-50%);
 	z-index: 9900;
 	opacity: 1;
+<<<<<<< HEAD
 }
 .loader span{
 	font-size: 60px;
@@ -112,6 +113,43 @@ body::after{
 	background-color: #f2d40d;
 	animation-delay: -0.5s;
 }
+=======
+}
+.loader span{
+	font-size: 60px;
+	position: relative;
+	top: -20%;
+	margin: 0 20px;
+}
+.loader h2{
+	font-size: 30px;
+	margin-top: 30px;
+}
+.loader>div {
+	  height: 100%;
+	  width: 8px;
+	  display: inline-flex;
+	  flex-direction: row;
+	  margin-left: 2px;
+	  animation: upDown 0.8s infinite ease-in-out;
+}
+	
+.loader .bar1{
+	  background-color: #754fa0 ;
+}
+.loader .bar2{
+	  background-color: #09b7bf;
+	  animation-delay: -0.7s;
+	}
+.loader .bar3{
+	background-color: #90d36b;
+	animation-delay: -0.6s;
+}
+.loader .bar4{
+	background-color: #f2d40d;
+	animation-delay: -0.5s;
+}
+>>>>>>> d0d418505e954d884ecb4dc2b325678bfe25c78e
 .loader  .bar5{
 	background-color: #fcb12b;
 	animation-delay: -0.4s;
@@ -407,17 +445,27 @@ body::after{
 
 .proj-content img{
 	height: 50vh;
+<<<<<<< HEAD
 	margin-bottom: 7vh;
+=======
+	margin-bottom: 5vh;
+>>>>>>> d0d418505e954d884ecb4dc2b325678bfe25c78e
 }
 
 .proj-desc{
 	font-size: 1.2em;
+<<<<<<< HEAD
 	text-align: left;
 }
 .proj-desc li{
 	font-family:'Roboto', sans-serif;
 	margin-bottom: 7px;
 }
+=======
+	font-family:'Open Sans', sans-serif;
+	text-align: left;
+}
+>>>>>>> d0d418505e954d884ecb4dc2b325678bfe25c78e
 
 .github-btn{
 	position: absolute;
@@ -476,7 +524,10 @@ body::after{
 	position: absolute;
 	top: 7%;
 	right: 7%;
+<<<<<<< HEAD
 	cursor: pointer;
+=======
+>>>>>>> d0d418505e954d884ecb4dc2b325678bfe25c78e
 }
 .proj-close-btn:hover {
 	color: #7231f8;
@@ -573,7 +624,11 @@ body::after{
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
+<<<<<<< HEAD
 	margin-left: -70px;
+=======
+	margin-left: -40px;
+>>>>>>> d0d418505e954d884ecb4dc2b325678bfe25c78e
 	transition: all 0.5s ease-out;
 	opacity: 0;
 
@@ -883,6 +938,7 @@ a{
 	  transform: scaleY(1.0);
 	  -webkit-transform: scaleY(1.0);
 	}
+<<<<<<< HEAD
 }
 
 @keyframes blink{
@@ -896,3 +952,6 @@ a{
     opacity:0
   }
 }
+=======
+  }
+>>>>>>> d0d418505e954d884ecb4dc2b325678bfe25c78e
