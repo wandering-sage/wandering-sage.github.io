@@ -573,7 +573,7 @@ body::after{
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-	margin-left: -40px;
+	margin-left: -70px;
 	transition: all 0.5s ease-out;
 	opacity: 0;
 
@@ -733,6 +733,15 @@ body::after{
     height: 100%;
     z-index: -1;
 }
+
+#about .typer:before {
+  opacity: 0;
+  content: "|";
+  font-family: cursive;
+  -webkit-animation: blink .9s infinite;
+  animation: blink .9s infinite;
+}
+
 /* ---------------------------------Contact------------------------------- */
 
 #contact{
@@ -874,4 +883,16 @@ a{
 	  transform: scaleY(1.0);
 	  -webkit-transform: scaleY(1.0);
 	}
+}
+
+@keyframes blink{
+  0%{
+    opacity:0
   }
+  50%{
+    opacity:1
+  }
+  to{
+    opacity:0
+  }
+}

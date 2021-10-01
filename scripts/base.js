@@ -293,7 +293,7 @@ class ProjectCard{
         function makeIt3d(e){
             let x = mapValue(e.offsetY,0,this.offsetHeight, -15, 15);
             let y = mapValue(e.offsetX,0,this.offsetWidth, 15, -15);
-            this.style.transform = `scale3d(1.05,1.05,1.05) rotateY(${y}deg) rotateX(${x}deg)`;
+            this.style.transform = `perspective(700px) scale3d(1.05,1.05,1.05) rotateY(${y}deg) rotateX(${x}deg)`;
             this.style.boxShadow = "15px 15px 45px -20px black";
         }
         function initCard(e){
@@ -503,7 +503,6 @@ var cursorSlow = document.querySelector(".cursor-slow");
 var mouseY = 0;
 var mouseX = 0;
 var mSize = 1;
-
 
 window.addEventListener("mousemove",followMouse);
 window.addEventListener("scroll",scrollMouse);

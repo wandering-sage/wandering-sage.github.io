@@ -1,13 +1,12 @@
 <div align="center">
 
-<h1>Portfolio</h1>
+<h1><a href="https://wandering-sage.github.io/">Portfolio</a></h1>
 
 <p>
   <strong>My vanilla JS portfolio</strong>
   <br /><br />
   Build from scratch with no dependency.
 </p>
-
 
 <p>
   <sub>Made with ❤︎ by
@@ -16,27 +15,18 @@
 </p>
 </div>
 
-
 ## Project in Action
 
-<img src="src/Images/Screenshot.PNG">
+<img src="src/images/Screenshot.PNG">
 
-## Getting Started
-- Clone this repo and unzip the folder wherever you want.
-- Launch your **Terminal** or **Command prompt**
-- Change directory to where you unzipped this folder.
-```bash
-cd Desktop
-cd Piano-master
-```
-- Type npm start to run the program.
-```bash
-npm start
-```
-- The website will be running at [http://127.0.0.1:3000/](http://127.0.0.1:3000/)
-- Enjoy!
+<h3><a href="https://wandering-sage.github.io/">Click here to visit Live Project</a></h3>
 
 ## Features
-- You can click any key on the piano.
-- You can also use the keyboard, the corresponding key is mentioned on the piano.
+
+- It has a cool page loader, people tends to wait more for a page with loader.
+- Implemented a small cursor that follows mouse with a delay and it gets bigger when there is a clickable object.
+- The NavBar has smooth scroll effect, when you click a section it will scroll to that section smoothly.
+- When a project is clicked, it creates a new state on hystory so that user can go back to main page using browser's back key. This helps in creating the illusion that projects are opened as a new page but they are just a bunch of divs.
+- Made 3D project cards that updates accourding to cursor position.
+- Every project has two links i.e. live project and view source code, you can hover over moniters to find them.
 
