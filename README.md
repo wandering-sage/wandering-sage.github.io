@@ -17,7 +17,7 @@
 
 ## Project in Action
 
-<img src="src/images/Screenshot.PNG">
+<img src="images/Screenshot.PNG">
 
 <h3><a href="https://wandering-sage.github.io/">Click here to visit Live Project</a></h3>
 
