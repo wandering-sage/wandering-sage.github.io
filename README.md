@@ -1,14 +1,9 @@
 <div align="center">
 
 <h1><a href="https://wandering-sage.github.io/">Portfolio</a></h1>
-
 <p>
-  <strong>My vanilla JS portfolio</strong>
-  <br /><br />
-  Build from scratch with no dependency.
-</p>
-
-<p>
+  <strong>My vanilla JavaScript portfolio website</strong>
+  <br />
   <sub>Made with ❤︎ by
     <a href="https://github.com/wandering-sage">Shivam Kumar</a>
   </sub>
